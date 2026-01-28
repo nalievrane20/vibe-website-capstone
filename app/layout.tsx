@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Link from "next/link";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,12 +23,103 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
+
+  
+   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        suppressHydrationWarning
+        className={`${geistSans.variable} ${geistMono.variable} antialiased h-screen overflow-hidden`}
       >
-        {children}
+        {/* TOP NAVBAR */}
+        <nav className="flex items-center justify-between px-8 py-4">
+          <Link href="/">
+            <img
+              src="/vibe-logo-white.png" // replace with your logo path
+              alt="Vibe Logo"
+              className="h-10 w-auto"
+            />
+          </Link>
+
+          <div className="nav-tab flex gap-6 font-medium">
+            <Link href="/" className="tab">
+              Home
+            </Link>
+            <Link href="/about" className="tab">
+              About Us
+            </Link>
+            <Link href="/contact" className="tab">
+              Contact
+            </Link>
+          </div>
+        </nav>
+
+        {/* MAIN LAYOUT */}
+        <div className="sidebar flex h-[calc(100vh-64px)]"> 
+          {/* full height minus navbar */}
+
+          {/* SIDEBAR */}
+          <aside className="w-64 border-r px-6 py-6">
+            <div className="profile">
+              <h2
+                id="usernameDisplay"
+                className="mb-4 text-lg font-semibold uppercase text-white-600"
+              >
+                User's Name
+              </h2>
+              <hr className="my-4 border-gray-200" />
+            </div>
+
+            <details className="group relative">
+              <summary className="mb-3 cursor-pointer list-none text-sm font-semibold uppercase text-white-600 flex items-center justify-between">
+                Updates
+                <span className="transition-transform group-open:rotate-180">▼</span>
+              </summary>
+
+              <ul className="absolute left-0 top-full mt-1 w-48 bg-white shadow-lg rounded-md space-y-2 p-2 z-50">
+                {["Events", "News"].map((item) => (
+                  <li key={item}>
+                    <button className="w-full px-3 py-2 text-left text-sm font-medium hover:bg-gray-100 hover:text-[#2B3D41] transition">
+                      {item}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </details>
+
+
+            <details className="group relative">
+              <summary className="mb-3 cursor-pointer list-none text-sm font-semibold uppercase text-white-600 flex items-center justify-between">
+                Colleges
+                <span className="transition-transform group-open:rotate-180">▼</span>
+              </summary>
+
+              <ul className="absolute left-0 top-full mt-1 w-48 bg-white shadow-lg rounded-md space-y-2 p-2 z-50">
+                {[
+                  "Arts & Sciences",
+                  "Business",
+                  "Computer",
+                  "Criminology",
+                  "Education",
+                  "Engineering",
+                  "Health Sciences",
+                  "Hospitality Management",
+                ].map((course) => (
+                  <li key={course}>
+                    <button className="w-full px-3 py-2 text-left text-sm font-medium hover:bg-gray-100 hover:text-[#2B3D41] transition">
+                      {course}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </details>
+
+
+          </aside>
+
+          {/* PAGE CONTENT */}
+          <main className="flex-1 p-8 overflow-auto">{children}</main>
+        </div>
       </body>
     </html>
   );

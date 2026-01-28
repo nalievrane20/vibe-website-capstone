@@ -24,3 +24,38 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+nav {
+    display: flex;
+    background: #2B3D41;
+    color: #fff;
+    padding: 1rem 2rem;
+}
+.nav-links {
+    display: flex;
+    margin-left: auto;
+    margin-right: 20px;
+    gap: 20px;
+}
+    .nav-links a {
+    color: #e5e7eb;
+    font-weight: 600;
+  }
+  
+    a.tab {
+    padding: 8px 12px;
+  }
+
+    a.tab:hover {
+      background: #344d53;
+      border-radius: 5px;
+      color: #fff;
+  }
+
+aside {
+    background: #1f3135;
+    color: #fff;
+}
+    details.group ul {
+    background: #2B3D41 !important;
+  }
