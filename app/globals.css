@@ -27,9 +27,18 @@ body {
 
 nav {
     display: flex;
-    background: #2B3D41;
+    background: #1F3135;
     color: #fff;
     padding: 1rem 2rem;
+}
+nav.nav-bar {
+    background-color: #263C41 !important;
+}
+.mob-nav {
+    background-color: #1F3135 !important;
+}
+nav.side-tab {
+    padding-left: 0px;
 }
 .nav-links {
     display: flex;
@@ -55,9 +64,9 @@ nav {
 aside {
     background: #1f3135;
     color: #fff;
+    padding-top: 100px;
 }
     details.group ul {
       background: #2B3D41 !important;
   }
 
-    

@@ -19,7 +19,6 @@ export const metadata: Metadata = {
   description: "Valuable Insights for Better Events",
 };
 
-/* ✅ DATA (OUTSIDE COMPONENT) */
 const items = [
   { label: "Events", href: "/events" },
   { label: "News", href: "/news" },
@@ -37,9 +36,7 @@ const colleges = [
   { label: "Hospitality Management", href: "/colleges/hospitality-management" },
 ];
 
-const aboutItems = [
-  { label: "Contact", href: "/about-us/contact" },
-];
+const aboutItems = [{ label: "Contact", href: "/about-us/contact" }];
 
 export default function RootLayout({
   children,
@@ -50,30 +47,85 @@ export default function RootLayout({
     <html lang="en">
       <body
         suppressHydrationWarning
-        className={`${geistSans.variable} ${geistMono.variable} antialiased h-screen overflow-hidden`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased h-screen`}
       >
-        {/* WRAPPER REQUIRED FOR peer */}
         <div className="relative h-full">
+          {/* ===== TOP NAVBAR ===== */}
+          <nav className="nav-bar relative z-50 flex items-center justify-between px-4 lg:px-8 py-4 bg-[#0F172A]">
+            <div className="flex items-center gap-4">
+              {/* ===== MOBILE MENU ===== */}
+              <details className="lg:hidden relative z-50 group">
+                <summary
+                  className="list-none w-8 h-6 cursor-pointer flex flex-col justify-between"
+                >
+                  <span className="block h-0.5 w-full bg-white rounded transition-all duration-300 group-open:rotate-45 group-open:translate-y-2.5" />
+                  <span className="block h-0.5 w-full bg-white rounded transition-all duration-300 group-open:opacity-0" />
+                  <span className="block h-0.5 w-full bg-white rounded transition-all duration-300 group-open:-rotate-45 group-open:-translate-y-2.5" />
+                </summary>
 
-          {/* SIDEBAR TOGGLE (CSS ONLY) */}
-          <input
-            type="checkbox"
-            id="sidebar-toggle"
-            className="peer hidden"
-          />
+                {/* Overlay */}
+                <div
+                  className="fixed top-16 left-0 right-0 bottom-0 bg-black/40
+                             opacity-0 pointer-events-none
+                             transition-opacity duration-300
+                             group-open:opacity-100 group-open:pointer-events-auto"
+                />
 
-          {/* TOP NAVBAR */}
-          <nav className="flex items-center justify-between px-4 md:px-8 py-4">
-            <div className="flex items-center gap-3">
-              {/* HAMBURGER */}
-              <label
-                htmlFor="sidebar-toggle"
-                className="md:hidden cursor-pointer text-white text-2xl z-50"
-              >
-                ☰
-              </label>
+                {/* Mobile Sidebar */}
+                <div
+                  className="mob-nav fixed top-16 left-0 w-64
+                             h-[calc(100vh-4rem)]
+                             bg-[#0F172A] p-6 shadow-xl
+                             transform -translate-x-full
+                             transition-transform duration-300 ease-in-out
+                             group-open:translate-x-0"
+                >
+                  <div className="h-full relative">
+                    <div className="flex items-center justify-between">
+                      <h2 className="text-lg font-semibold uppercase text-white">
+                        User&apos;s Name
+                      </h2>
+                    </div>
+                    <hr className="my-4 border-gray-600" />
 
-              <Link href="/">
+                    {/* Mobile dropdowns now float */}
+                    <nav className="side-tab flex flex-col gap-2 relative">
+                      {[
+                        { title: "Updates", links: items },
+                        { title: "Colleges", links: colleges },
+                        { title: "About Us", links: aboutItems },
+                      ].map((section) => (
+                        <details
+                          key={section.title}
+                          className="group relative dropdown"
+                        >
+                          <summary className="cursor-pointer list-none text-sm font-semibold uppercase text-white flex justify-between items-center">
+                            <span>{section.title}</span>
+                            <span className="transition-transform group-open:rotate-180">▲</span>
+                          </summary>
+
+                          {/* Floating ul */}
+                          <ul className="absolute top-full left-0 mt-1 w-64 bg-[#0F172A] border border-gray-700 rounded shadow-lg z-50 max-h-[calc(100vh-4rem)] overflow-auto">
+                            {section.links.map(({ label, href }) => (
+                              <li key={label}>
+                                <Link
+                                  href={href}
+                                  className="block px-3 py-2 text-sm rounded hover:bg-gray-700 text-white whitespace-nowrap"
+                                >
+                                  {label}
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        </details>
+                      ))}
+                    </nav>
+                  </div>
+                </div>
+              </details>
+
+              {/* Logo */}
+              <Link href="/" className="ml-4 lg:ml-0">
                 <img
                   src="/vibe-logo-white.png"
                   alt="Vibe Logo"
@@ -82,122 +134,99 @@ export default function RootLayout({
               </Link>
             </div>
 
-            <div className="nav-tab flex gap-6 font-medium">
+            <div className="flex gap-6 font-medium">
               <Cart />
             </div>
           </nav>
 
-          {/* MAIN LAYOUT */}
-          <div className="relative flex h-[calc(100vh-64px)]">
+          {/* ===== DESKTOP SIDEBAR ===== */}
+          <aside className="hidden lg:block fixed top-0 left-0 z-40 h-full w-64 bg-[#0F172A] border-r px-6 py-6">
+            <div className="mb-6">
+              <h2 className="text-lg font-semibold uppercase text-white">
+                User&apos;s Name
+              </h2>
+              <hr className="my-4 border-gray-600" />
+            </div>
 
-            {/* OVERLAY */}
-            <label
-              htmlFor="sidebar-toggle"
-              className="fixed inset-0 bg-black/50 z-40 hidden peer-checked:block md:hidden"
-            />
+            <nav className="side-tab flex flex-col gap-2">
+              {[
+                { title: "Updates", links: items },
+                { title: "Colleges", links: colleges },
+                { title: "About Us", links: aboutItems },
+              ].map((section) => (
+                <details
+                  key={section.title}
+                  className="group relative dropdown"
+                >
+                  <summary className="cursor-pointer select-none flex justify-between items-center text-sm font-semibold uppercase text-white">
+                    <span>{section.title}</span>
+                    <span className="transition-transform group-open:rotate-180">▲</span>
+                  </summary>
 
-            {/* SIDEBAR */}
-            <aside
-              className="
-                fixed md:static top-0 left-0 z-50
-                h-full w-64
-                border-r px-6 py-6 bg-[#0F172A]
-                transform transition-transform duration-300
-                -translate-x-full peer-checked:translate-x-0
-                md:translate-x-0
-              "
-            >
-              {/* CLOSE BUTTON */}
-              <label
-                htmlFor="sidebar-toggle"
-                className="md:hidden mb-4 block cursor-pointer text-white text-xl"
-              >
-                ✕
-              </label>
-
-              <div className="profile">
-                <h2 className="mb-4 text-lg font-semibold uppercase text-white">
-                  User&apos;s Name
-                </h2>
-                <hr className="my-4 border-gray-200" />
-              </div>
-
-              {/* UPDATES */}
-              <details className="group mb-4">
-                <summary className="cursor-pointer list-none text-sm font-semibold uppercase text-white flex justify-between">
-                  <span>Updates</span>
-                  <span className="group-open:rotate-180">▼</span>
-                </summary>
-
-                <ul className="mt-2 space-y-1">
-                  {items.map(({ label, href }) => (
-                    <li key={label}>
-                      <label htmlFor="sidebar-toggle">
+                  <ul className="absolute top-0 mt-0 w-48 bg-[#0F172A] border border-gray-700 rounded shadow-lg z-50 left-full min-w-max max-w-[calc(100vw-4rem)] transition-all duration-200">
+                    {section.links.map(({ label, href }) => (
+                      <li key={label}>
                         <Link
                           href={href}
-                          className="block px-3 py-2 text-sm rounded hover:bg-gray-700"
+                          className="block px-3 py-2 text-sm rounded hover:bg-gray-700 text-white whitespace-nowrap"
                         >
                           {label}
                         </Link>
-                      </label>
-                    </li>
-                  ))}
-                </ul>
-              </details>
+                      </li>
+                    ))}
+                  </ul>
+                </details>
+              ))}
+            </nav>
+          </aside>
 
-              {/* COLLEGES */}
-              <details className="group mb-4">
-                <summary className="cursor-pointer list-none text-sm font-semibold uppercase text-white flex justify-between">
-                  <span>Colleges</span>
-                  <span className="group-open:rotate-180">▼</span>
-                </summary>
-
-                <ul className="mt-2 space-y-1">
-                  {colleges.map(({ label, href }) => (
-                    <li key={label}>
-                      <label htmlFor="sidebar-toggle">
-                        <Link
-                          href={href}
-                          className="block px-3 py-2 text-sm rounded hover:bg-gray-700"
-                        >
-                          {label}
-                        </Link>
-                      </label>
-                    </li>
-                  ))}
-                </ul>
-              </details>
-
-              {/* ABOUT */}
-              <details className="group">
-                <summary className="cursor-pointer list-none text-sm font-semibold uppercase text-white flex justify-between">
-                  <span>About Us</span>
-                  <span className="group-open:rotate-180">▼</span>
-                </summary>
-
-                <ul className="mt-2 space-y-1">
-                  {aboutItems.map(({ label, href }) => (
-                    <li key={label}>
-                      <label htmlFor="sidebar-toggle">
-                        <Link
-                          href={href}
-                          className="block px-3 py-2 text-sm rounded hover:bg-gray-700"
-                        >
-                          {label}
-                        </Link>
-                      </label>
-                    </li>
-                  ))}
-                </ul>
-              </details>
-            </aside>
-
-            {/* PAGE CONTENT */}
-            <main className="flex-1 p-6 md:p-8 overflow-auto">
-              {children}
-            </main>
-          </div>
+          {/* ===== MAIN CONTENT ===== */}
+          <main className="lg:ml-64 p-6 lg:p-8 overflow-auto">
+            {children}
+          </main>
         </div>
+
+        {/* ===== SCRIPT: Single open dropdown + click outside + auto-flip desktop dropdowns ===== */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+            document.addEventListener("DOMContentLoaded", function () {
+              const dropdowns = document.querySelectorAll("details.dropdown");
+
+              dropdowns.forEach((dropdown) => {
+                dropdown.addEventListener("toggle", () => {
+                  if (dropdown.open) {
+                    // Close others
+                    dropdowns.forEach((d) => {
+                      if (d !== dropdown) d.open = false;
+                    });
+
+                    // Flip left if desktop dropdown overflows
+                    const ul = dropdown.querySelector("ul");
+                    if (ul && window.innerWidth >= 1024) {
+                      const rect = ul.getBoundingClientRect();
+                      if (rect.right > window.innerWidth) {
+                        ul.classList.add("left-auto", "right-full");
+                      } else {
+                        ul.classList.remove("left-auto", "right-full");
+                      }
+                    }
+                  }
+                });
+              });
+
+              // Close all when clicking outside
+              document.addEventListener("click", function(event) {
+                dropdowns.forEach((dropdown) => {
+                  if (!dropdown.contains(event.target)) {
+                    dropdown.open = false;
+                  }
+                });
+              });
+            });
+          `,
+          }}
+        />
       </body>
     </html>
   );
