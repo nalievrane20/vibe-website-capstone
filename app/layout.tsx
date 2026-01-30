@@ -253,11 +253,6 @@ export default function RootLayout({
 
           {/* ===== MAIN CONTENT ===== */}
           <main className="lg:ml-64 pt-20 p-6 lg:p-8 overflow-auto">
-            {/* ===== USER NAME HEADER ===== */}
-            <div className="mb-4">
-              <h2 className="text-xl font-semibold text-gray-900">{userName}</h2>
-              <hr className="border-gray-300 mt-1" />
-            </div>
 
             {/* PAGE CONTENT */}
             {children}
